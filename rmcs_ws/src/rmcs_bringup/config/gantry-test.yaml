@@ -1,0 +1,59 @@
+rmcs_executor:
+  ros__parameters:
+    update_rate: 1000.0
+    components:
+      - rmcs_core::hardware::GantryLauncher -> gantry_hardware
+      - rmcs_core::controller::gantry::GantryController -> gantry_controller
+      - rmcs_core::controller::gantry::PitchController -> pitch_controller
+      - rmcs_core::controller::pid::PidController -> yaw_velocity_pid
+
+gantry_hardware:
+  ros__parameters:
+    board_serial: ""
+
+gantry_controller:
+  ros__parameters:
+    
+    yaw_sensitivity: 15.0
+    
+    yaw_max_velocity: 15.0
+    
+    joystick_deadzone: 0.02
+
+pitch_controller:
+  ros__parameters:
+   
+    pitch_sensitivity: -15.0       
+    pitch_max_velocity: 15.0      
+    joystick_deadzone: 0.02
+
+    
+    sync_coefficient: 0.1
+
+    
+    feedback_source: "average"
+
+    
+    kp: 0.5
+    ki: 0.0
+    kd: 0.0
+    output_max: 1.2
+    output_min: -1.2
+
+    test_velocity: 0.0
+    test_kp: 0.5
+    test_torque_limit: 1.6
+
+yaw_velocity_pid:
+  ros__parameters:
+    measurement: /gantry/yaw/motor/velocity
+    setpoint: /gantry/yaw/motor/control_velocity
+    control: /gantry/yaw/motor/control_torque
+    
+    kp: 2.0
+    ki: 0.0
+    
+
+    kd: 0.0
+    output_max: 1.6
+    output_min: -1.6
